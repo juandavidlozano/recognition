@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Lozano Dog Recognition</title>
+</head>
+<body>
+    <h1>Juan Lozano Dog Recognition</h1>
+    <!-- The camera feed will be inserted here -->
+    <video id="videoElement" width="640" height="480" style="display: none;"></video>
+    <!-- Button to start the camera -->
+    <button id="startButton">Start Camera</button>
+
+    <script>
+        var video = document.getElementById('videoElement');
+        var button = document.getElementById('startButton');
+
+        button.addEventListener('click', function() {
+            // Prompt the user for permission to access the camera
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Display the video stream in the video element
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    video.play();
+                }).catch(function(error) {
+                    console.error('Error accessing the camera', error);
+                });
+            } else {
+                alert('Your browser does not support user media');
+            }
+        });
+    </script>
+</body>
+</html>
