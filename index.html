@@ -24,10 +24,10 @@
         <h2>Sign In</h2>
         <form id="signInForm">
             <!-- Sign-in form fields -->
-            <label for="emailSignIn">Email:</label>
-            <input type="email" id="emailSignIn" name="emailSignIn" placeholder="Enter your email" required><br>
-            <label for="passwordSignIn">Password:</label>
-            <input type="password" id="passwordSignIn" name="passwordSignIn" placeholder="Enter your password" required><br>
+            <label for="signInEmail">Email:</label>
+            <input type="email" id="signInEmail" name="signInEmail" placeholder="Enter your email" required><br>
+            <label for="signInPassword">Password:</label>
+            <input type="password" id="signInPassword" name="signInPassword" placeholder="Enter your password" required><br>
             <button type="submit">Sign In</button>
         </form>
     </div>
@@ -42,12 +42,6 @@
         function handleSignInSuccess() {
             // Make the "Start Camera" button visible
             document.getElementById('startButton').style.display = 'block';
-        }
-
-        // Function to handle sign-out
-        function handleSignOut() {
-            // Hide the "Start Camera" button
-            document.getElementById('startButton').style.display = 'none';
         }
 
         // Function to handle sign-up using Amazon Cognito
@@ -69,11 +63,11 @@
 
             userPool.signUp(email, password, attributeList, null, function(err, result) {
                 if (err) {
-                    alert(err.message || JSON.stringify(err));
+                    console.error('Error signing up:', err);
                     return;
                 }
                 var cognitoUser = result.user;
-                console.log('user name is ' + cognitoUser.getUsername());
+                console.log('Sign up successful. Username:', cognitoUser.getUsername());
             });
         }
 
@@ -103,11 +97,11 @@
                     handleSignInSuccess();
                 },
                 onFailure: function(err) {
-                    alert(err.message || JSON.stringify(err));
+                    console.error('Error signing in:', err);
                 },
                 newPasswordRequired: function(userAttributes, requiredAttributes) {
                     // User must set a new password
-                    alert('Please set a new password');
+                    console.log('New password required');
                 }
             });
         }
@@ -122,8 +116,8 @@
 
         document.getElementById('signInForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const email = document.getElementById('emailSignIn').value;
-            const password = document.getElementById('passwordSignIn').value;
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
             signIn(email, password);
         });
 
