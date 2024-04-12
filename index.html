@@ -5,12 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Access</title>
+    <style>
+        /* Center the video horizontally and vertically */
+        #cameraFeed {
+            width: 50%; /* Set the width of the video */
+            max-width: 400px; /* Maximum width of the video */
+            display: block; /* Ensure the video is displayed as a block element */
+            margin: auto; /* Center horizontally */
+            margin-top: 50px; /* Add some space from the top */
+        }
+    </style>
 </head>
 
 <body>
     <button onclick="startCamera()">Start Camera</button>
     <br>
-    <video id="cameraFeed" autoplay="true" style="width: 100%;"></video>
+    <video id="cameraFeed" autoplay="true"></video>
 
     <script>
         function startCamera() {
