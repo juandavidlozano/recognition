@@ -40,11 +40,63 @@
     <script>
         // Add your authentication functions here
         function signUp(username, password) {
-            // Implement the signUp function using Amazon Cognito SDK
+            var poolData = {
+                UserPoolId: 'us-east-1_VuG7LBSk9',
+                ClientId: '781vlifi5d223olvu7e8smhj1t'
+            };
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+            var attributeList = [];
+
+            var dataEmail = {
+                Name: 'email',
+                Value: username // Assuming username is the email
+            };
+
+            var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+
+            attributeList.push(attributeEmail);
+
+            userPool.signUp(username, password, attributeList, null, function(err, result) {
+                if (err) {
+                    console.error('Error signing up:', err);
+                    return;
+                }
+                var cognitoUser = result.user;
+                console.log('User successfully signed up:', cognitoUser);
+            });
         }
 
         function signIn(username, password) {
-            // Implement the signIn function using Amazon Cognito SDK
+            var authenticationData = {
+                Username: username,
+                Password: password
+            };
+
+            var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+            var poolData = {
+                UserPoolId: 'us-east-1_VuG7LBSk9',
+                ClientId: '781vlifi5d223olvu7e8smhj1t'
+            };
+
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            var userData = {
+                Username: username,
+                Pool: userPool
+            };
+
+            var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+            cognitoUser.authenticateUser(authenticationDetails, {
+                onSuccess: function(result) {
+                    console.log('Authentication successful:', result);
+                    // Redirect or perform any actions after successful authentication
+                },
+                onFailure: function(err) {
+                    console.error('Error authenticating:', err);
+                }
+            });
         }
 
         // Add event listeners to the sign-up and sign-in forms
