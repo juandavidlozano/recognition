@@ -52,14 +52,64 @@
 
         // Function to handle sign-up using Amazon Cognito
         function signUp(username, password) {
-            // Implement the signUp function using Amazon Cognito SDK
+            var poolData = {
+                UserPoolId: 'us-east-1_VuG7LBSk9',
+                ClientId: '781vlifi5d223olvu7e8smhj1t'
+            };
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+            var attributeList = [];
+            var dataEmail = {
+                Name: 'email',
+                Value: username
+            };
+            var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+
+            attributeList.push(attributeEmail);
+
+            userPool.signUp(username, password, attributeList, null, function(err, result) {
+                if (err) {
+                    alert(err.message || JSON.stringify(err));
+                    return;
+                }
+                var cognitoUser = result.user;
+                console.log('user name is ' + cognitoUser.getUsername());
+            });
         }
 
         // Function to handle sign-in using Amazon Cognito
         function signIn(username, password) {
-            // Implement the signIn function using Amazon Cognito SDK
-            // After successful sign-in, call handleSignInSuccess()
-            handleSignInSuccess();
+            var authenticationData = {
+                Username: username,
+                Password: password
+            };
+            var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+            var poolData = {
+                UserPoolId: 'us-east-1_VuG7LBSk9',
+                ClientId: '781vlifi5d223olvu7e8smhj1t'
+            };
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            var userData = {
+                Username: username,
+                Pool: userPool
+            };
+            var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+            cognitoUser.authenticateUser(authenticationDetails, {
+                onSuccess: function(result) {
+                    var accessToken = result.getAccessToken().getJwtToken();
+                    console.log('Authentication successful');
+                    handleSignInSuccess();
+                },
+                onFailure: function(err) {
+                    alert(err.message || JSON.stringify(err));
+                },
+                newPasswordRequired: function(userAttributes, requiredAttributes) {
+                    // User must set a new password
+                    alert('Please set a new password');
+                }
+            });
         }
 
         // Add event listeners to the sign-up and sign-in forms
@@ -100,3 +150,4 @@
     </script>
 </body>
 </html>
+
