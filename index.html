@@ -1,147 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juan Lozano Dog Recognition</title>
-    <!-- Include the Amazon Cognito SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1027.0/aws-sdk.min.js"></script>
-    <script src="https://github.com/amazon-archives/amazon-cognito-identity-js/blob/master/dist/amazon-cognito-identity.min.js"></script>
-
+    <title>Camera Access</title>
 </head>
-<body>
-    <h1>Juan Lozano Dog Recognition</h1>
-    <!-- Authentication forms -->
-    <div id="authForms">
-        <h2>Sign Up</h2>
-        <form id="signUpForm">
-            <!-- Sign-up form fields -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
-            <button type="submit">Sign Up</button>
-        </form>
-        <h2>Sign In</h2>
-        <form id="signInForm">
-            <!-- Sign-in form fields -->
-            <label for="signInEmail">Email:</label>
-            <input type="email" id="signInEmail" name="signInEmail" placeholder="Enter your email" required><br>
-            <label for="signInPassword">Password:</label>
-            <input type="password" id="signInPassword" name="signInPassword" placeholder="Enter your password" required><br>
-            <button type="submit">Sign In</button>
-        </form>
-    </div>
 
-    <!-- The camera feed will be inserted here -->
-    <video id="videoElement" width="640" height="480" style="display: none;"></video>
-    <!-- Button to start the camera -->
-    <button id="startButton" style="display: none;">Start Camera</button>
+<body>
+    <button onclick="startCamera()">Start Camera</button>
+    <br>
+    <video id="cameraFeed" autoplay="true" style="width: 100%;"></video>
 
     <script>
-        // Function to handle successful sign-in
-        function handleSignInSuccess() {
-            // Make the "Start Camera" button visible
-            document.getElementById('startButton').style.display = 'block';
-        }
+        function startCamera() {
+            // Get video element
+            var videoElement = document.getElementById('cameraFeed');
 
-        // Function to handle sign-up using Amazon Cognito
-        function signUp(email, password) {
-            var poolData = {
-                UserPoolId: 'us-east-1_VuG7LBSk9',
-                ClientId: '781vlifi5d223olvu7e8smhj1t'
-            };
-            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-            var attributeList = [];
-            var dataEmail = {
-                Name: 'email',
-                Value: email
-            };
-            var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-
-            attributeList.push(attributeEmail);
-
-            userPool.signUp(email, password, attributeList, null, function(err, result) {
-                if (err) {
-                    console.error('Error signing up:', err);
-                    return;
-                }
-                var cognitoUser = result.user;
-                console.log('Sign up successful. Username:', cognitoUser.getUsername());
-            });
-        }
-
-        // Function to handle sign-in using Amazon Cognito
-        function signIn(email, password) {
-            var authenticationData = {
-                Username: email,
-                Password: password
-            };
-            var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-            var poolData = {
-                UserPoolId: 'us-east-1_VuG7LBSk9',
-                ClientId: '781vlifi5d223olvu7e8smhj1t'
-            };
-            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-            var userData = {
-                Username: email,
-                Pool: userPool
-            };
-            var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.authenticateUser(authenticationDetails, {
-                onSuccess: function(result) {
-                    var accessToken = result.getAccessToken().getJwtToken();
-                    console.log('Authentication successful');
-                    handleSignInSuccess();
-                },
-                onFailure: function(err) {
-                    console.error('Error signing in:', err);
-                },
-                newPasswordRequired: function(userAttributes, requiredAttributes) {
-                    // User must set a new password
-                    console.log('New password required');
-                }
-            });
-        }
-
-        // Add event listeners to the sign-up and sign-in forms
-        document.getElementById('signUpForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            signUp(email, password);
-        });
-
-        document.getElementById('signInForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('signInEmail').value;
-            const password = document.getElementById('signInPassword').value;
-            signIn(email, password);
-        });
-
-        // Add your camera functionality
-        var video = document.getElementById('videoElement');
-        var button = document.getElementById('startButton');
-
-        button.addEventListener('click', function() {
-            // Prompt the user for permission to access the camera
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    // Display the video stream in the video element
-                    video.srcObject = stream;
-                    video.style.display = 'block';
-                    video.play();
-                }).catch(function(error) {
-                    console.error('Error accessing the camera', error);
+            // Request access to the camera
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    // Set the video stream to the video element
+                    videoElement.srcObject = stream;
+                })
+                .catch(function (err) {
+                    console.error('Error accessing the camera: ', err);
                 });
-            } else {
-                alert('Your browser does not support user media');
-            }
-        });
+        }
     </script>
 </body>
+
 </html>
