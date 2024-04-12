@@ -35,68 +35,31 @@
     <!-- The camera feed will be inserted here -->
     <video id="videoElement" width="640" height="480" style="display: none;"></video>
     <!-- Button to start the camera -->
-    <button id="startButton">Start Camera</button>
+    <button id="startButton" style="display: none;">Start Camera</button>
 
     <script>
-        // Add your authentication functions here
-        function signUp(username, password) {
-            var poolData = {
-                UserPoolId: 'us-east-1_VuG7LBSk9',
-                ClientId: '781vlifi5d223olvu7e8smhj1t'
-            };
-            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-            var attributeList = [];
-
-            var dataEmail = {
-                Name: 'email',
-                Value: username // Assuming username is the email
-            };
-
-            var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-
-            attributeList.push(attributeEmail);
-
-            userPool.signUp(username, password, attributeList, null, function(err, result) {
-                if (err) {
-                    console.error('Error signing up:', err);
-                    return;
-                }
-                var cognitoUser = result.user;
-                console.log('User successfully signed up:', cognitoUser);
-            });
+        // Function to handle successful sign-in
+        function handleSignInSuccess() {
+            // Make the "Start Camera" button visible
+            document.getElementById('startButton').style.display = 'block';
         }
 
+        // Function to handle sign-out
+        function handleSignOut() {
+            // Hide the "Start Camera" button
+            document.getElementById('startButton').style.display = 'none';
+        }
+
+        // Function to handle sign-up using Amazon Cognito
+        function signUp(username, password) {
+            // Implement the signUp function using Amazon Cognito SDK
+        }
+
+        // Function to handle sign-in using Amazon Cognito
         function signIn(username, password) {
-            var authenticationData = {
-                Username: username,
-                Password: password
-            };
-
-            var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-            var poolData = {
-                UserPoolId: 'us-east-1_VuG7LBSk9',
-                ClientId: '781vlifi5d223olvu7e8smhj1t'
-            };
-
-            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-            var userData = {
-                Username: username,
-                Pool: userPool
-            };
-
-            var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.authenticateUser(authenticationDetails, {
-                onSuccess: function(result) {
-                    console.log('Authentication successful:', result);
-                    // Redirect or perform any actions after successful authentication
-                },
-                onFailure: function(err) {
-                    console.error('Error authenticating:', err);
-                }
-            });
+            // Implement the signIn function using Amazon Cognito SDK
+            // After successful sign-in, call handleSignInSuccess()
+            handleSignInSuccess();
         }
 
         // Add event listeners to the sign-up and sign-in forms
@@ -137,3 +100,4 @@
     </script>
 </body>
 </html>
+
