@@ -4,6 +4,8 @@
 function setupPeriodicImageCapture() {
     const videoElement = document.getElementById('cameraFeed');
     const statusElement = document.getElementById('status'); // Element where the detection result will be displayed
+    let captureCount = 0; // Initialize capture counter
+    const maxCaptures = 2; // Maximum number of captures
 
     if (!videoElement) {
         console.error('Video element not found');
@@ -17,7 +19,14 @@ function setupPeriodicImageCapture() {
         }
 
         // Set an interval to capture images from the video feed every 10 seconds
-        setInterval(() => captureImageAndDetectDog(videoElement, statusElement), 3000);
+        const captureInterval = setInterval(() => {
+            if (captureCount < maxCaptures) {
+                captureImageAndDetectDog(videoElement, statusElement);
+                captureCount++; // Increment the capture count
+            } else {
+                clearInterval(captureInterval); // Clear the interval to stop future captures
+            }
+        }, 3000);
     };
 }
 
