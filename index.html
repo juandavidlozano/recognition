@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <link rel="icon" type="image/png" href="https://juandavidlozano.github.io/recognition/images/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="https://juandavidlozano.github.io/recognition/images/favicon-32x32.png" sizes="32x32">
-
+    <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32">
 </head>
 
 <body>
@@ -172,21 +171,6 @@
         <button id="startCameraBtn" class="btn btn-primary" style="display: none; margin-top: 10px;" onclick="startCamera()">Start Camera</button>
     </div> <!-- /container -->
 
-    <div class="container">
-        <h2>Instructions to Use the System</h2>
-        <ol>
-            <li>Click on the "Actions" dropdown and select "Add User".</li>
-            <li>Wait for the registration email and follow the instructions to confirm the user with the code provided in the email.</li>
-            <li>Sign in using your registered credentials.</li>
-            <li>Once signed in, you will be able to see the "Start Camera" button.</li>
-            <li>Click on the "Start Camera" button to activate the video feed.</li>
-            <li>The video feed will appear, and the model will start analyzing the images, displaying labels at the top the screen.</li>
-        </ol>
-    </div>
-
-
-    
-
     <!-- Bootstrap's JavaScript dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -197,12 +181,11 @@
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1316.0.min.js"></script>
 
     <!-- Cognito User Pool related code -->
-
     <script type="text/javascript" src="https://juandavidlozano.github.io/recognition/js/amazon-cognito-identity.min.js"></script>
     <script type="text/javascript" src="https://juandavidlozano.github.io/recognition/js/authentication.js"></script>
     <script type="text/javascript" src="https://juandavidlozano.github.io/recognition/js/rekognition.js"></script>
     <script type="text/javascript" src="https://juandavidlozano.github.io/recognition/js/user-interface.js"></script>
-
+    <script>
         // Function to start camera feed
         function startCamera() {
             // Get video element
@@ -231,4 +214,7 @@
 </body>
 
 </html>
+
+
+
 
